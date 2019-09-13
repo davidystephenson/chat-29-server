@@ -3,7 +3,6 @@ const cors = require('cors')
 const express = require('express')
 const Sse = require('json-sse')
 
-const db = require('./db')
 const factory = require('./router')
 
 const stream = new Sse()

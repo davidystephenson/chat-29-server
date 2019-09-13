@@ -2,12 +2,16 @@ const express = require('express')
 
 const { Router } = express
 
-const messages = ['hello world', 'goodbye']
+const Message = require('./model')
 
 function factory (stream) {
   const router = new Router()
 
-  function onStream (request, response) {
+  async function onStream (
+    request, response
+  ) {
+    const messages = await Message
+      .findAll()
     const data = JSON.stringify(messages)
     console.log('data test:', data)
 
@@ -17,15 +21,24 @@ function factory (stream) {
 
   router.get('/stream', onStream)
 
-  function onMessage (request, response) {
+  async function onMessage (
+    request, response
+  ) {
     const { text } = request.body
 
-    messages.push(text)
+    // messages.push(text)
+
+    const message = await Message
+      .create({ text })
+
+    const messages = await Message
+      .findAll()
+
     const data = JSON.stringify(messages)
 
     stream.send(data)
 
-    return response.send(text)
+    return response.send(message)
   }
 
   router.post('/message', onMessage)
