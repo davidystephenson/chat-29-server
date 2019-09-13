@@ -4,7 +4,7 @@ const { Router } = express
 
 const Channel = require('./model')
 
-function factory (stream) {
+function factory (update) {
   const router = new Router()
 
   async function onChannel (
@@ -14,6 +14,8 @@ function factory (stream) {
 
     const channel = await Channel
       .create({ name })
+
+    await update()
 
     return response.send(channel)
   }
