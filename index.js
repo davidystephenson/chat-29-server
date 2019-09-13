@@ -1,11 +1,16 @@
+const bodyParser = require('body-parser')
+const cors = require('cors')
 const express = require('express')
 const Sse = require('json-sse')
-const bodyParser = require('body-parser')
+
 const factory = require('./router')
 
 const stream = new Sse()
 
 const app = express()
+
+const middleware = cors()
+app.use(middleware)
 
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
